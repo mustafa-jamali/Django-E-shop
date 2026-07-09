@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}My Order History - E-Shop{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">My Order History</h2>
+
+    {% if orders %}
+        <div class="table-responsive shadow-sm rounded">
+            <table class="table table-bordered table-hover align-middle mb-0 bg-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td class="fw-bold">#{{ order.id }}</td>
+                            <td>{{ order.created_at|date:"d M Y, h:i A" }}</td>
+                            <td>
+                                <ul class="list-unstyled mb-0">
+                                    {% for item in order.items.all %}
+                                        <li>• {{ item.product.name }} <span class="text-muted">(x{{ item.quantity }})</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td class="text-primary fw-bold">${{ order.total_amount }}</td>
+                            <td>
+                                {% if order.status == 'Pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                {% elif order.status == 'Shipped' %}
+                                    <span class="badge bg-info text-dark">Shipped</span>
+                                {% elif order.status == 'Delivered' %}
+                                    <span class="badge bg-success">Delivered</span>
+                                {% else %}
+                                    <span class="badge bg-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info py-4 text-center">
+            <h4>You haven't placed any orders yet!</h4>
+            <a href="/" class="btn btn-dark mt-2">Start Shopping</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

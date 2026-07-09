@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout - E-Shop{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Checkout</h2>
+<div class="row">
+    <div class="col-md-7">
+        <div class="card p-4 shadow-sm">
+            <h4 class="mb-3">Shipping & Billing Details</h4>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Place Order (Cash on Delivery)</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card p-4 shadow-sm bg-light">
+            <h4 class="mb-3">Your Order</h4>
+            <ul class="list-group mb-3">
+                {% for item in cart_items %}
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                            <h6 class="my-0">{{ item.product.name }}</h6>
+                            <small class="text-muted">Quantity: {{ item.quantity }}</small>
+                        </div>
+                        <span class="text-muted">${{ item.product.price }}</span>
+                    </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between bg-dark text-white">
+                    <span>Total (USD)</span>
+                    <strong>${{ total_price }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
