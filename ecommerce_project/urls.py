@@ -28,7 +28,5 @@ urlpatterns = [
     path('orders/', include('orders.urls', namespace='orders')),
 ]
 
-# Development mode mein media files (images) show karne ke liye
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
